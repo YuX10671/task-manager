@@ -176,13 +176,15 @@ git push -u origin main
 1. 打开 [vercel.com](https://vercel.com)，用 GitHub 账号登录，点击 **Add New → Project**，选择刚上传的仓库。
 2. 配置项目：
    - **Root Directory**：保持仓库根目录。
-   - **Build Command**：`npm run build --prefix client`
+   - **Framework Preset**：选 `Vite`（或 Other）。
+   - **Install Command**：保持默认 `npm install`（安装根目录依赖，即后端函数所需的 express / cors / @supabase/supabase-js 等）。
+   - **Build Command**：`npm install --prefix client && npm run build --prefix client`
    - **Output Directory**：`client/dist`
 3. 在 **Environment Variables** 中添加 Supabase 相关变量（与 `server/.env` 一致）：
    - `SUPABASE_URL`
    - `SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY`
-4. 点击 **Deploy**。`api/index.js` 会作为 Serverless 函数处理 `/api/**` 请求，`vercel.json` 已配好路由重写。
+4. 点击 **Deploy**。根目录 `api/index.js` 会作为 Serverless 函数处理 `/api/**` 请求，`vercel.json` 已配好路由重写；前端请求 `/api/...` 走同域，`VITE_API_BASE` 留空即可。
 
 #### 方案 B：前后端分离部署
 - 后端 Express 单独部署到 Render / Railway / 云服务器，配置 Supabase 环境变量，拿到后端公网地址。
